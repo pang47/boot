@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 通过namespace来找到对应的sql语句 -->
+<mapper namespace="com.taoboot.mini.core.dao.IAccountTransInfoMapper">
+	<!-- 映射对象 -->
+	<resultMap type="com.taoboot.mini.model.AccountTransInfoDTO" id="BaseResultMap">
+		<id column="ACCOUNT_TRANS_ID" jdbcType="VARCHAR" property="accountTransId" />
+		<id column="MONEY" jdbcType="VARCHAR" property="money" />
+		<id column="CRT_DATE" jdbcType="VARCHAR" property="crtDate" />
+		<id column="CRT_TIME" jdbcType="VARCHAR" property="crtTime" />
+		<id column="OPEN_ID" jdbcType="VARCHAR" property="user" />
+		<id column="CHANNEL" jdbcType="VARCHAR" property="channel" />
+		<id column="CHANNEL_NAME" jdbcType="VARCHAR" property="channelName" />
+		<id column="BEFORE_BALANCE" jdbcType="VARCHAR" property="beforeBalance" />
+	</resultMap>
+
+	<insert id="save" parameterType="com.taoboot.mini.model.AccountTransInfoDTO">
+		INSERT INTO ACCOUNT_TRANS_INFO(
+		ACCOUNT_TRANS_ID,
+		MONEY,
+		CRT_DATE,
+		CRT_TIME,
+		CHANNEL,
+		CHANNEL_NAME,
+		OPEN_ID,
+		BEFORE_BALANCE
+		)
+		VALUES(
+			#{accountTransId,jdbcType=VARCHAR},
+			#{money,jdbcType=VARCHAR},
+			#{crtDate,jdbcType=VARCHAR},
+			#{crtTime,jdbcType=VARCHAR},
+			#{channel,jdbcType=VARCHAR},
+			#{channelName,jdbcType=VARCHAR},
+			#{user,jdbcType=VARCHAR},
+			#{beforeBalance,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<select id="queryLimit" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+		ACCOUNT_TRANS_ID,
+		MONEY,
+		CRT_DATE,
+		CRT_TIME,
+		CHANNEL,
+		CHANNEL_NAME,
+		OPEN_ID,
+		BEFORE_BALANCE
+		FROM
+		ACCOUNT_TRANS_INFO
+		ORDER BY CRT_DATE DESC, CRT_TIME DESC
+		LIMIT #{length}
+	</select>
+
+	<select id="queryByChannel" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT
+		ACCOUNT_TRANS_ID,
+		MONEY,
+		CRT_DATE,
+		CRT_TIME,
+		CHANNEL,
+		CHANNEL_NAME,
+		OPEN_ID,
+		BEFORE_BALANCE
+		FROM
+		ACCOUNT_TRANS_INFO WHERE CHANNEL = #{channel}
+		ORDER BY CRT_DATE DESC, CRT_TIME DESC
+		LIMIT 1
+	</select>
+
+
+
+</mapper>

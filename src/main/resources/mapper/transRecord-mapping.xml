@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 通过namespace来找到对应的sql语句 -->
+<mapper namespace="com.taoboot.mini.core.dao.ITransRecordMapper">
+	<!-- 映射对象 -->
+	<resultMap type="com.taoboot.mini.model.TransRecordDTO" id="BaseResultMap">
+		<id column="TRANS_ID" jdbcType="VARCHAR" property="transId" />
+		<id column="MONEY" jdbcType="VARCHAR" property="money" />
+		<id column="OPEN_ID" jdbcType="VARCHAR" property="user" />
+		<id column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+		<id column="TRANS_DATE" jdbcType="VARCHAR" property="transDate" />
+		<id column="TRANS_TIME" jdbcType="VARCHAR" property="transTime" />
+		<id column="TRANS_TYPE" jdbcType="VARCHAR" property="transType" />
+		<id column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<id column="CRT_DATE" jdbcType="VARCHAR" property="crtDate" />
+		<id column="CRT_TIME" jdbcType="VARCHAR" property="crtTime" />
+		<id column="STATUS" jdbcType="VARCHAR" property="status" />
+	</resultMap>
+
+	<insert id="saveRecord" parameterType="com.taoboot.mini.model.TransRecordDTO">
+		INSERT INTO TRANSRECORD(
+		TRANS_ID,
+		MONEY,
+		OPEN_ID,
+		USER_NAME,
+		TRANS_DATE,
+		TRANS_TIME,
+		TRANS_TYPE,
+		REMARK,
+		CRT_DATE,
+		CRT_TIME
+		)
+		VALUES(
+			#{transId,jdbcType=VARCHAR},
+			#{money,jdbcType=VARCHAR},
+			#{user,jdbcType=VARCHAR},
+			#{userName,jdbcType=VARCHAR},
+			#{transDate,jdbcType=VARCHAR},
+			#{transTime,jdbcType=VARCHAR},
+			#{transType,jdbcType=VARCHAR},
+			#{remark,jdbcType=VARCHAR},
+			#{crtDate,jdbcType=VARCHAR},
+			#{crtTime,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<select id="getRecordByUserAndDate" parameterType="com.taoboot.mini.model.TransRecordDTO" resultMap="BaseResultMap">
+		SELECT
+		TRANS_ID,
+		MONEY,
+		OPEN_ID,
+		USER_NAME,
+		TRANS_DATE,
+		TRANS_TIME,
+		TRANS_TYPE,
+		REMARK,
+		STATUS
+		FROM
+		TRANSRECORD
+		WHERE OPEN_ID = #{user,jdbcType=VARCHAR} AND INSTR(TRANS_DATE, #{transDate,jdbcType=VARCHAR}) > 0 AND STATUS = '1'
+		ORDER BY TRANS_DATE DESC, CRT_DATE DESC, CRT_TIME DESC
+	</select>
+
+	<select id="getRecordByUser" parameterType="com.taoboot.mini.model.TransRecordDTO" resultMap="BaseResultMap">
+		SELECT
+		TRANS_ID,
+		MONEY,
+		OPEN_ID,
+		USER_NAME,
+		TRANS_DATE,
+		TRANS_TIME,
+		TRANS_TYPE,
+		REMARK
+		FROM
+		TRANSRECORD
+		WHERE OPEN_ID = #{user,jdbcType=VARCHAR} AND STATUS = '1'
+		ORDER BY TRANS_DATE DESC
+	</select>
+
+	<select id="getTransRecord" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT
+		TRANS_ID,
+		MONEY,
+		OPEN_ID,
+		USER_NAME,
+		TRANS_DATE,
+		TRANS_TIME,
+		TRANS_TYPE,
+		REMARK
+		FROM
+		TRANSRECORD
+		WHERE TRANS_ID = #{transId}
+	</select>
+
+	<update id="updateTransRecordStatus" parameterType="com.taoboot.mini.model.TransRecordDTO">
+		update TRANSRECORD SET STATUS = #{status,jdbcType=VARCHAR} where TRANS_ID = #{transId,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateTransRecord" parameterType="com.taoboot.mini.model.TransRecordDTO">
+		update TRANSRECORD SET
+		MONEY = #{money, jdbcType=VARCHAR},
+		REMARK = #{remark, jdbcType=VARCHAR},
+		TRANS_DATE = #{transDate, jdbcType=VARCHAR}
+		where TRANS_ID = #{transId,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

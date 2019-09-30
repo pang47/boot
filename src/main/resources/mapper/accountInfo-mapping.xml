@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 通过namespace来找到对应的sql语句 -->
+<mapper namespace="com.taoboot.mini.core.dao.IAccountInfoMapper">
+	<!-- 映射对象 -->
+	<resultMap type="com.taoboot.mini.model.AccountInfoDTO" id="BaseResultMap">
+		<id column="ACCOUNT_ID" jdbcType="VARCHAR" property="accountId" />
+		<id column="OPEN_ID" jdbcType="VARCHAR" property="user" />
+		<id column="BALANCE" jdbcType="VARCHAR" property="balance" />
+		<id column="CHANNEL" jdbcType="VARCHAR" property="channel" />
+		<id column="CHANNEL_NAME" jdbcType="VARCHAR" property="channelName" />
+		<id column="UPDATE_DATE" jdbcType="VARCHAR" property="updateDate" />
+		<id column="UPDATE_TIME" jdbcType="VARCHAR" property="updateTime" />
+		<id column="CRT_DATE" jdbcType="VARCHAR" property="crtDate" />
+		<id column="CRT_TIME" jdbcType="VARCHAR" property="crtTime" />
+		<id column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+	</resultMap>
+
+	<insert id="saveAccount" parameterType="com.taoboot.mini.model.AccountInfoDTO">
+		INSERT INTO ACCOUNT_INFO(
+		ACCOUNT_ID,
+		OPEN_ID,
+		BALANCE,
+		CHANNEL,
+		CHANNEL_NAME,
+		UPDATE_DATE,
+		UPDATE_TIME,
+		CRT_DATE,
+		CRT_TIME,
+		USER_NAME
+		)
+		VALUES(
+			#{accountId,jdbcType=VARCHAR},
+			#{user,jdbcType=VARCHAR},
+			#{balance,jdbcType=VARCHAR},
+			#{channel,jdbcType=VARCHAR},
+			#{channelName,jdbcType=VARCHAR},
+			#{updateDate,jdbcType=VARCHAR},
+			#{updateTime,jdbcType=VARCHAR},
+			#{crtDate,jdbcType=VARCHAR},
+			#{crtTime,jdbcType=VARCHAR},
+			#{userName,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<select id="getAccountInfoByUserIdAndChannel" parameterType="com.taoboot.mini.model.AccountInfoDTO" resultMap="BaseResultMap">
+		SELECT
+		ACCOUNT_ID,
+		OPEN_ID,
+		BALANCE,
+		CHANNEL,
+		CHANNEL_NAME,
+		UPDATE_DATE,
+		UPDATE_TIME,
+		CRT_DATE,
+		CRT_TIME,
+		USER_NAME
+		FROM
+		ACCOUNT_INFO
+		WHERE OPEN_ID = #{user,jdbcType=VARCHAR} AND CHANNEL = #{channel,jdbcType=VARCHAR}
+	</select>
+
+	<update id="updateAccount" parameterType="com.taoboot.mini.model.AccountInfoDTO">
+		UPDATE ACCOUNT_INFO
+		SET BALANCE = #{balance,jdbcType=VARCHAR}, UPDATE_TIME = #{updateTime,jdbcType=VARCHAR}, UPDATE_DATE = #{updateDate,jdbcType=VARCHAR}
+		WHERE OPEN_ID = #{user,jdbcType=VARCHAR} AND CHANNEL = #{channel,jdbcType=VARCHAR}
+	</update>
+
+	<select id="getAccountInfo" resultType="com.taoboot.mini.model.vo.AccountInfoVo">
+		SELECT channel, SUM(balance) AS sumBalance, GROUP_CONCAT(balance, '(', user_name, ')') AS exp FROM account_info GROUP BY channel;
+	</select>
+
+
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 通过namespace来找到对应的sql语句 -->
+<mapper namespace="com.taoboot.mini.core.dao.IFormInfoMapper">
+	<!-- 映射对象 -->
+	<resultMap type="com.taoboot.mini.model.FormInfoDTO" id="BaseResultMap">
+		<id column="FORM_ID" jdbcType="VARCHAR" property="formId" />
+		<id column="STATUS" jdbcType="VARCHAR" property="status" />
+		<id column="PUSH_MSG" jdbcType="VARCHAR" property="pushMsg" />
+		<id column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
+		<id column="CRT_DATE" jdbcType="VARCHAR" property="crtDate" />
+		<id column="PUSH_DATE" jdbcType="VARCHAR" property="pushDate" />
+		<id column="PUSH_TIME" jdbcType="VARCHAR" property="pushTime" />
+		<id column="TEMPLETE" jdbcType="VARCHAR" property="templete" />
+		<id column="ERR_MSG" jdbcType="VARCHAR" property="errMsg" />
+	</resultMap>
+
+	<insert id="saveFormInfo" parameterType="com.taoboot.mini.model.FormInfoDTO">
+		INSERT INTO FORM_INFO(
+		FORM_ID,
+		STATUS,
+		PUSH_MSG,
+		OPEN_ID,
+		CRT_DATE,
+		PUSH_DATE,
+		PUSH_TIME,
+		TEMPLETE,
+		ERR_MSG
+		)
+		VALUES(
+			#{formId,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{pushMsg,jdbcType=VARCHAR},
+			#{openId,jdbcType=VARCHAR},
+			#{crtDate,jdbcType=VARCHAR},
+			#{pushDate,jdbcType=VARCHAR},
+			#{pushTime,jdbcType=VARCHAR},
+			#{templete,jdbcType=VARCHAR},
+			#{errMsg, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="updateFormInfo">
+		UPDATE FORM_INFO SET
+		STATUS = #{status,jdbcType=VARCHAR},
+		PUSH_MSG = #{pushMsg,jdbcType=VARCHAR},
+		PUSH_DATE = #{pushDate,jdbcType=VARCHAR},
+		PUSH_TIME = #{pushTime,jdbcType=VARCHAR},
+		TEMPLETE = #{templete,jdbcType=VARCHAR},
+		ERR_MSG = #{errMsg, jdbcType=VARCHAR}
+		WHERE FORM_ID = #{formId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="getFormInfoByOpenId" parameterType="com.taoboot.mini.model.FormInfoDTO" resultMap="BaseResultMap">
+		SELECT
+		FORM_ID,
+		STATUS,
+		PUSH_MSG,
+		OPEN_ID,
+		CRT_DATE,
+		PUSH_DATE,
+		PUSH_TIME,
+		TEMPLETE,
+		ERR_MSG
+		FROM
+		FORM_INFO
+		WHERE
+		OPEN_ID = #{openId,jdbcType=VARCHAR} AND STATUS = '0'
+		ORDER BY
+		CRT_DATE DESC
+		LIMIT 1
+	</select>
+
+</mapper>

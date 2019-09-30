@@ -1,0 +1,17 @@
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: utf-8
+  servlet:
+    context-path: /taomini
+spring:
+  datasource:
+    url: jdbc:mysql://dbServer:3306/tao_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+    username: chentao
+    password: Z1314520x!
+
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
